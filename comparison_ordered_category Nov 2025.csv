@@ -1,0 +1,9 @@
+recommendation_categories,plan,plan_n,plan_total,category_within_plan_prop,category_total_prop,disproportionality
+Accessibility,Y,11,51,21.6%,24.8%,-3.3%
+Accessibility,N,30,114,26.3%,24.8%,1.5%
+Climate,Y,18,51,35.3%,44.2%,-8.9%
+Climate,N,55,114,48.2%,44.2%,4.0%
+Protocols,Y,14,51,27.5%,17.0%,10.5%
+Protocols,N,14,114,12.3%,17.0%,-4.7%
+Training,Y,8,51,15.7%,13.9%,1.7%
+Training,N,15,114,13.2%,13.9%,-0.8%
