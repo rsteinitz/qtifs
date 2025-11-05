@@ -17,9 +17,9 @@ This repository contains the data and analysis code used in support of the manus
 
 ## Overview
 
-The Queer and Trans Field Safety Assessment (QT-FSA) is a structured checklist designed to support inclusive, identity-affirming field environments. This repository accompanies the manuscript and provides all reproducible code used for the literature review and quantitative analyses of field-safety recommendations.
+The Queer and Trans Field Safety Assessment (QTFSA) is a structured checklist designed to support inclusive, identity-affirming field environments. This repository accompanies the manuscript and provides all reproducible code used for the literature review and quantitative analyses of field-safety recommendations.
 
-The goal of the QT-FSA is to translate broad calls for inclusion into actionable steps that can be implemented across labs, field courses, and field stations, bridging the gap between policy and practice in field safety.
+The goal of the QTFSA is to translate broad calls for inclusion into actionable steps that can be implemented across labs, field courses, and field stations, bridging the gap between policy and practice in field safety.
 
 
 ## Repository contents
