@@ -2,7 +2,8 @@
 title: "QTIFS"
 date: "2025-11-05"
 output:
-  pdf_document: default
+  pdf_document:
+    latex_engine: xelatex
 editor_options: 
   chunk_output_type: console
 ---
@@ -16,7 +17,7 @@ The following analyses summarize the distribution of these recommendations, visu
 
 ## INTRO
 ### Attach packages
-```{r}
+```{r, echo=TRUE, results='hide', message=FALSE, warning=FALSE}
 
 library(tidyverse)   # includes dplyr, ggplot2, readr, forcats, etc.
 library(readxl)      # for reading Excel files if used elsewhere
@@ -35,11 +36,27 @@ library(scales)      # for axis scaling and labels
 
 q <- read_xlsx("QTIFS lit review data Nov 2025.xlsx") %>% 
   janitor::clean_names() %>% 
-  dplyr::filter(!is.na(recommendation_categories) & !is.na(recommendation_scale))
+  dplyr::filter(!is.na(recommendation_categories) & !is.na(recommendation_scale)) %>% 
+  mutate(
+    recommendation_categories = fct_relevel(recommendation_categories,
+                                            c("Climate", 
+                                              "Protocols", 
+                                              "Training",  
+                                              "Accessibility")),
+    recommendation_scale = fct_relevel(recommendation_scale, c(
+      "Outside Institution", 
+      "Institution", 
+      "Department", 
+      "Lab", "PI", 
+      "Individual"
+    ))
+  )
   
-test <- q %>% dplyr::group_by(as.factor(recommendation_scale)) %>% dplyr::summarize(n())
-sum(test$`n()`) # 165
-print(test)
+arts <- q %>% dplyr::group_by(as.factor(recommendation_scale)) %>%
+  dplyr::summarize(n())
+
+sum(arts$`n()`)
+print(arts)
 
 q %>% dplyr::group_by(as.factor(recommendation_scale)) %>% dplyr::summarize(n()/nrow(q))
 
@@ -67,28 +84,7 @@ q_collect <- q %>%
     num = n()
   ) %>% 
   ungroup() %>% 
-  mutate(recommendation_categories = fct_relevel(recommendation_categories, c("Climate", "Protocols", "Training",  "Accessibility")),
-         recommendation_scale = fct_relevel(recommendation_scale, c(
-           "Outside Institution",
-           "Institution",
-           "Department",
-           "Lab", 
-           "PI",
-           "Individual"))
-         ) %>% 
   na.omit()
-
-# relevel factors for consistent ordering in plots
-q_traverse <- q %>% 
-  mutate(recommendation_categories = fct_relevel(recommendation_categories, c("Climate", "Protocols", "Training",  "Accessibility")),
-         recommendation_scale = fct_relevel(recommendation_scale, c(
-           "Outside Institution",
-           "Institution",
-           "Department",
-           "Lab", 
-           "PI",
-           "Individual"))
-         ) 
 
 ```
 
@@ -100,20 +96,13 @@ q_traverse <- q %>%
 q_unique_rec <- q %>%
   select(article, one_sentence_summary, recommendation_categories, recommendation_scale) %>%
   distinct() %>%
-  count(recommendation_categories, name = "num") %>%
-  mutate(recommendation_categories = fct_relevel(recommendation_categories, c("Climate", "Protocols", "Training",  "Accessibility")))
+  count(recommendation_categories, name = "num")
 
 # count unique combinations of category and scale
 q_heatmap <- q %>%
   select(article, one_sentence_summary, recommendation_categories, recommendation_scale, recommendation_scale) %>%
   distinct() %>%
-  count(recommendation_categories, recommendation_scale, name = "num") %>%
-  mutate(
-    recommendation_categories = fct_relevel(recommendation_categories, c("Climate", "Protocols", "Training",  "Accessibility")),
-    recommendation_scale = fct_relevel(recommendation_scale, c(
-      "Outside Institution", "Institution", "Department", "Lab", "PI", "Individual"
-    ))
-  )
+  count(recommendation_categories, recommendation_scale, name = "num")
 
 # count unique articles and recommendations to use in plots later
 q_unique_articles <- length(unique(q$article))
@@ -158,7 +147,7 @@ heatmap <- ggplot(q_heatmap, aes(x = recommendation_scale, y = recommendation_ca
   guides(fill = guide_legend(), size = guide_legend()) +
   labs(title = "Distribution of recommendation categories and scales", x = "Scale", y = "Categories", subtitle = paste0(" N = ", sum_q, " category-scales in ", q_unique_articles, " unique articles"))
 
-heatmap
+# heatmap
 # ggsave("Heatmap.png", width = 7, height = 5)
 
 ```
@@ -208,7 +197,7 @@ themes <- ggplot(q_collect, aes(x = recommendation_categories, y = num, fill = r
         panel.background = element_rect(fill = "white", color = NA),
     plot.background = element_rect(fill = "white", color = NA))
 
-themes
+# themes
 # ggsave("Recommendation Categories Bar Chart.png", width = 6, height = 4)
 
 ```
@@ -276,7 +265,7 @@ plan <- ggplot(q_plan_status, aes(x = plan_for_implementation_y_n, y = num, fill
     plot.background = element_rect(fill = "white", color = NA)
   )
 
-plan
+# plan
 # ggsave("Plan Inclusion Bar Chart.png", width = 5, height = 5)
 
 ```
@@ -344,7 +333,7 @@ testing <- ggplot(q_real_world_test, aes(x = real_world_implementation_testing_y
         panel.background = element_rect(fill = "white", color = NA),
     plot.background = element_rect(fill = "white", color = NA))
 
-testing
+# testing
 # ggsave("Real World Testing Bar Chart.png", width = 5, height = 5)
 ```
 
@@ -357,13 +346,6 @@ Identify where the literature places responsibility for implementing recommendat
 # count how many recommendations were assigned to each implementation scale
 q_responsibility <- q %>%
   select(article, recommendation_categories, recommendation_scale) %>%
-  mutate(recommendation_scale = fct_relevel(recommendation_scale, c(
-    "Individual",
-    "PI",
-    "Lab", 
-    "Department",
-    "Institution",
-    "Outside Institution"))) %>% 
   distinct() %>%
   count(recommendation_scale, name = "num")
 
@@ -394,7 +376,7 @@ responsibility <- ggplot(q_responsibility, aes(x = recommendation_scale, y = num
         panel.background = element_rect(fill = "white", color = NA),
     plot.background = element_rect(fill = "white", color = NA))
 
-responsibility
+# responsibility
 # ggsave("Implementation Level.png", width = 6, height = 4)
 
 ```
