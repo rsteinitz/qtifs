@@ -20,13 +20,13 @@ The following analyses summarize the distribution of these recommendations, visu
 ```{r, echo=TRUE, results='hide', message=FALSE, warning=FALSE}
 
 library(tidyverse)   # includes dplyr, ggplot2, readr, forcats, etc.
-library(readxl)      # for reading Excel files if used elsewhere
-library(janitor)     # for data cleaning and column name formatting
-library(ggpubr)      # for ggplot helpers and statistical annotations
-library(patchwork)   # for combining multiple ggplots
-library(viridis)     # for color palettes
-library(ggalluvial)  # for alluvial/flow diagrams
-library(scales)      # for axis scaling and labels
+library(readxl)      # reading Excel files if used elsewhere
+library(janitor)     # data cleaning and column name formatting
+library(ggpubr)      # ggplot helpers and statistical annotations
+library(patchwork)   # combining multiple ggplots
+library(viridis)     # color palettes
+library(ggalluvial)  # alluvial/flow diagrams
+library(scales)      # axis scaling and labels
 
 ```
 
@@ -148,6 +148,7 @@ heatmap <- ggplot(q_heatmap, aes(x = recommendation_scale, y = recommendation_ca
   labs(title = "Distribution of recommendation categories and scales", x = "Scale", y = "Categories", subtitle = paste0(" N = ", sum_q, " category-scales in ", q_unique_articles, " unique articles"))
 
 # heatmap
+# ggsave("Heatmap.pdf", width = 7, height = 5)
 # ggsave("Heatmap.png", width = 7, height = 5)
 
 ```
@@ -198,6 +199,7 @@ themes <- ggplot(q_collect, aes(x = recommendation_categories, y = num, fill = r
     plot.background = element_rect(fill = "white", color = NA))
 
 # themes
+# ggsave("Recommendation Categories Bar Chart.pdf", width = 6, height = 4)
 # ggsave("Recommendation Categories Bar Chart.png", width = 6, height = 4)
 
 ```
@@ -266,6 +268,7 @@ plan <- ggplot(q_plan_status, aes(x = plan_for_implementation_y_n, y = num, fill
   )
 
 # plan
+# ggsave("Plan Inclusion Bar Chart.pdf", width = 5, height = 5)
 # ggsave("Plan Inclusion Bar Chart.png", width = 5, height = 5)
 
 ```
@@ -334,7 +337,9 @@ testing <- ggplot(q_real_world_test, aes(x = real_world_implementation_testing_y
     plot.background = element_rect(fill = "white", color = NA))
 
 # testing
+# ggsave("Real World Testing Bar Chart.pdf", width = 5, height = 5)
 # ggsave("Real World Testing Bar Chart.png", width = 5, height = 5)
+
 ```
 
 
@@ -377,6 +382,7 @@ responsibility <- ggplot(q_responsibility, aes(x = recommendation_scale, y = num
     plot.background = element_rect(fill = "white", color = NA))
 
 # responsibility
+# ggsave("Implementation Level.pdf", width = 6, height = 4)
 # ggsave("Implementation Level.png", width = 6, height = 4)
 
 ```
@@ -387,6 +393,7 @@ responsibility <- ggplot(q_responsibility, aes(x = recommendation_scale, y = num
 (heatmap + plan) / plot_spacer() / (themes + responsibility) + 
   plot_layout(heights = c(3, 0.25, 2.5))
 
+# ggsave("combined_plots.pdf", height = 10, width = 12)
 # ggsave("combined_plots.png", height = 10, width = 12)
 
 ```
@@ -461,6 +468,7 @@ ggplot(alluvial_data,
   guides(fill = guide_legend(override.aes = list(size = 1)))
 
 
+# ggsave("flow_of_recs.pdf", width = 8, height = 6)
 # ggsave("flow_of_recs.png", width = 8, height = 6)
 
 ```

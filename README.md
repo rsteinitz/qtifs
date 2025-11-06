@@ -33,7 +33,7 @@ The goal of the QTFSA is to translate broad calls for inclusion into actionable 
 
 ## Analysis summary
 
-All analyses were conducted in **R 4.4.1 (RStudio 2025.05.1)** using `tidyverse`, `ggplot2`, and related libraries. The code quantifies the frequency and distribution of implementation plans across thematic categories (Climate, Protocols, Training, Accessibility) and scales of responsibility (Individual, PI, Lab, Department, Institution, Outside Institution).
+All analyses were conducted in **R 4.5.0 (RStudio 2025.09.2+418)** using `tidyverse`, `ggplot2`, and related libraries. The code quantifies the frequency and distribution of implementation plans across thematic categories (Climate, Protocols, Training, Accessibility) and scales of responsibility (Individual, PI, Lab, Department, Institution, Outside Institution).
 
 
 ## How to reproduce
